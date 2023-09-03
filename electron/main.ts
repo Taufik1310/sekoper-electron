@@ -1,9 +1,34 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
+import { createProductTypes, getProductType } from './controller/ProductTypeController';
+import { createUniforms, getAllUniform } from './controller/UniformController';
+// import { createProductTypes, deleteAllProductTypes, insertProductTypes, getProductTypes } from './models/testmgr';
+
+let win : BrowserWindow 
+
+const seederData = async () => {
+  try {
+    await createProductTypes()
+    await createUniforms()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+seederData()
+
+ipcMain.handle('getAllUniform', (event, data) => {
+  return getAllUniform()
+})
+ipcMain.handle('getProductType', (event, data) => {
+  return getProductType(data)
+})
+
+
 
 function createWindow() {
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -12,12 +37,14 @@ function createWindow() {
     }
   })
 
+  
+
   if (app.isPackaged) {
     // 'build/index.html'
     win.loadURL(`file://${__dirname}/../index.html`);
   } else {
     win.loadURL('http://localhost:3000/index.html');
-
+    
     win.webContents.openDevTools();
 
     // Hot Reloading on 'node_modules/.bin/electronPath'
@@ -34,14 +61,14 @@ function createWindow() {
   }
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   // DevTools
   installExtension(REACT_DEVELOPER_TOOLS)
     .then((name) => console.log(`Added Extension:  ${name}`))
     .catch((err) => console.log('An error occurred: ', err));
 
   createWindow();
-
+  
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
