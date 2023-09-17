@@ -1,10 +1,12 @@
 import { DataTypes } from "sequelize"
 import sequelize from "./connection"
 
-const Uniform = sequelize.define('uniforms', {
-    name: {
+const User = sequelize.define('users', {
+    id: {
         type: DataTypes.STRING(100),
-        allowNull: false
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
     },
     price: {
         type: DataTypes.DOUBLE(13),
@@ -17,12 +19,9 @@ const Uniform = sequelize.define('uniforms', {
     image: {
         type: DataTypes.STRING,
     },
-    size: {
-        type :DataTypes.STRING(5),
-    },
     product_type_id: {
         type: DataTypes.INTEGER,
     }
 })
 
-export default Uniform
+export default User

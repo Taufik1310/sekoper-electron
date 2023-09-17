@@ -2,15 +2,13 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
 import { createProductTypes, getProductType } from './controller/ProductTypeController';
-import { createUniforms, getAllUniform } from './controller/UniformController';
-// import { createProductTypes, deleteAllProductTypes, insertProductTypes, getProductTypes } from './models/testmgr';
-
+import { createProducts, getProduct, getProductByType } from './controller/ProductController';
 let win : BrowserWindow 
 
 const seederData = async () => {
   try {
     await createProductTypes()
-    await createUniforms()
+    await createProducts()
   } catch (error) {
     console.error(error)
   }
@@ -18,11 +16,14 @@ const seederData = async () => {
 
 seederData()
 
-ipcMain.handle('getAllUniform', (event, data) => {
-  return getAllUniform()
-})
 ipcMain.handle('getProductType', (event, data) => {
   return getProductType(data)
+})
+ipcMain.handle('getProductByType', (event, data) => {
+  return getProductByType(data)
+})
+ipcMain.handle('getProduct', (event, data) => {
+  return getProduct(data)
 })
 
 

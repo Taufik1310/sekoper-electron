@@ -14,8 +14,8 @@ export const createProductTypes = async () => {
         },
         { 
             id: 3, 
-            type: 'Alat Sekolah', 
-            description: 'Alat sekolah mencakup berbagai peralatan yang digunakan dalam konteks pendidikan, seperti buku teks, tas sekolah, dan perlengkapan lainnya yang diperlukan oleh siswa.' },
+            type: 'Perlengkapan Sekolah', 
+            description: 'Perlengkapan sekolah mencakup berbagai peralatan yang digunakan dalam konteks pendidikan, seperti buku teks, tas sekolah, dan perlengkapan lainnya yang diperlukan oleh siswa.' },
         { 
             id: 4, 
             type: 'Alat Olahraga', 
@@ -31,6 +31,11 @@ export const createProductTypes = async () => {
             type: 'Alat Kesenian', 
             description: 'Alat kesenian adalah peralatan yang digunakan dalam berbagai jenis seni, seperti cat, kuas, kanvas, instrumen musik, dan peralatan lain yang digunakan untuk mengungkapkan kreativitas dan bakat seni.' 
         },
+        {
+            id: 7,
+            type: 'Aksesoris Sekolah',
+            description: 'Aksesoris sekolah mencakup berbagai barang tambahan yang digunakan oleh siswa untuk melengkapi seragam sekolah mereka, seperti dasi, topi, ikat pinggang, dan lainnya.'
+        },  
     ]      
     try {
         await ProductType.sync({ force: true })

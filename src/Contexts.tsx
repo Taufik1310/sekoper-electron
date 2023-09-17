@@ -12,4 +12,11 @@ const OffcanvasContext = createContext({
   onClose: () => {},
 })
 
-export { PaginationContext, OffcanvasContext }
+const CheckoutContext = createContext({
+  isOpen: false,
+  dataId: 0,
+  onOpen: (id: number) => {},
+  onClose: () => {}
+})
+
+export { PaginationContext, OffcanvasContext, CheckoutContext }

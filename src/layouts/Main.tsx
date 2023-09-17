@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { OffcanvasContext, PaginationContext } from '../Contexts'
+import { CheckoutContext, OffcanvasContext, PaginationContext } from '../Contexts'
 import Intro from '../components/Intro'
 import Navbar from '../components/Navbar'
 import Offcanvas from '../components/Offcanvas'
@@ -9,6 +9,8 @@ const Main = () => {
   const [pageId, setPageId] = useState(0)
   const [isOpenOffcanvas, setIsOpenOffcanvas] = useState(false)
   const [offcanvasDataId, setOffcanvasDataId] = useState(0)
+  const [isOpenCheckout, setIsOpenCheckout] = useState(false)
+  const [checkoutDataId, setCheckoutDataId] = useState(0)
 
   const handlePageChanged = (id: number) => {
     setPageId(id)
@@ -19,9 +21,15 @@ const Main = () => {
     setIsOpenOffcanvas(true)
     setOffcanvasDataId(id)
   }
-
+  
   const handleOffcanvasClosed = () => {
     setIsOpenOffcanvas(false)
+    setIsOpenCheckout(false)
+  }
+
+  const handleCheckoutShowing = (id: number) => {
+    setIsOpenCheckout(true)
+    setCheckoutDataId(id)
   }
 
   return (
@@ -40,10 +48,19 @@ const Main = () => {
               onClose: handleOffcanvasClosed,
             }}
           >
-            {isOpenOffcanvas && <Offcanvas />}
-            <Navbar />
-            {pageId === 0 && <Intro />}
-            {pageId === 1 && <Products />}
+            <CheckoutContext.Provider
+              value={{ 
+                isOpen: isOpenCheckout,
+                dataId: checkoutDataId,
+                onOpen: handleCheckoutShowing,
+                onClose: handleOffcanvasClosed
+               }}
+            >
+              {isOpenOffcanvas && <Offcanvas />}
+              <Navbar />
+              {pageId === 0 && <Intro />}
+              {pageId === 1 && <Products />}
+            </CheckoutContext.Provider>
           </OffcanvasContext.Provider>
         </PaginationContext.Provider>
       </main>

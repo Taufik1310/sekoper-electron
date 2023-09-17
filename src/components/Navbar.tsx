@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { FaHome, FaInfoCircle, FaShoppingBag } from 'react-icons/fa'
 import { OffcanvasContext, PaginationContext } from '../Contexts'
-import reactIcon from '../img/school-uniform.png'
+import sekoperLogo from '../img/logo.png'
 
 const Navbar = () => {
   const { pageId, onChange } = useContext(PaginationContext)
@@ -37,7 +37,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`flex justify-between items-center w-screen px-5 py-10 text-blue-50 transition-all duration-1000 ease-in-out ${
+      className={`flex justify-between items-center w-screen p-10 text-blue-50 transition-all duration-1000 ease-in-out ${
         isVisible ? 'translate-y-0 opacity-1' : '-translate-y-full opacity-0'
       }`}
     >
@@ -52,7 +52,7 @@ const Navbar = () => {
         tabIndex={0}
         className="cursor-pointer"
       >
-        <img src={reactIcon} alt="Sekoper Logo" width={60} />
+        <img src={sekoperLogo} alt="Sekoper Logo" width={60} />
       </div>
       <ul className="flex items-center self-end gap-16 font-medium">
         {navMenu &&

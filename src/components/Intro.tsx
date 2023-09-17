@@ -1,7 +1,7 @@
 import { FaArrowRightLong } from 'react-icons/fa6';
 import { useContext, useEffect, useState } from 'react';
 import { PaginationContext } from '../Contexts';
-import reactIcon from '../img/school-uniform.png';
+import heroImg from '../img/hero_image.png';
 
 const Intro = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -14,7 +14,7 @@ const Intro = () => {
   }, []);
 
   return (
-    <div className="text-blue-50 mt-20 px-12 flex justify-between items-center">
+    <div className="text-blue-50 mt-10 px-12 flex justify-between items-center">
       <div
         className={`w-6/12 transition-all duration-1000 ease-in-out ${
           isVisible ? 'translate-x-0 opacity-1' : '-translate-x-full opacity-0'
@@ -44,11 +44,11 @@ const Intro = () => {
         </button>
       </div>
       <div
-        className={`w-4/12 transition-all duration-1000 ease-in-out ${
+        className={`w-5/12 transition-all duration-1000 ease-in-out ${
           isVisible ? 'translate-x-0 opacity-1' : 'translate-x-full opacity-0'
         }`}
       >
-        <img src={reactIcon} alt="Introduction" />
+        <img src={heroImg} alt="Introduction" />
       </div>
     </div>
   );
