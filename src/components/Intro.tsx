@@ -1,17 +1,18 @@
-import { FaArrowRightLong } from 'react-icons/fa6';
-import { useContext, useEffect, useState } from 'react';
-import { PaginationContext } from '../Contexts';
-import heroImg from '../img/hero_image.png';
+import { FaArrowRightLong } from 'react-icons/fa6'
+import { useContext, useEffect, useState } from 'react'
+import { AuthContext, PaginationContext } from '../Contexts'
+import heroImg from '../img/hero_image.png'
 
 const Intro = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const { onChange } = useContext(PaginationContext);
+  const [isVisible, setIsVisible] = useState(false)
+  const { onChange } = useContext(PaginationContext)
+  const { user }: { user: any } = useContext(AuthContext)
 
   useEffect(() => {
     setTimeout(() => {
-      setIsVisible(true);
-    }, 200);
-  }, []);
+      setIsVisible(true)
+    }, 200)
+  }, [])
 
   return (
     <div className="text-blue-50 mt-10 px-12 flex justify-between items-center">
@@ -20,7 +21,7 @@ const Intro = () => {
           isVisible ? 'translate-x-0 opacity-1' : '-translate-x-full opacity-0'
         }`}
       >
-        <h2 className="font-semibold text-3xl mb-5">Hai, User !</h2>
+        <h2 className="font-semibold text-3xl mb-5">Hai, {user.username} !</h2>
         <h1 className="font-bold text-3xl mb-5">
           Selamat Datang di <span className="text-blue-700">SEKOPER</span>
         </h1>
@@ -51,7 +52,7 @@ const Intro = () => {
         <img src={heroImg} alt="Introduction" />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Intro;
+export default Intro

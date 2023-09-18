@@ -3,10 +3,12 @@ import * as path from 'path';
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
 import { createProductTypes, getProductType } from './controller/ProductTypeController';
 import { createProducts, getProduct, getProductByType } from './controller/ProductController';
+import { createUsers, getUser, insertUser } from './controller/UserController';
 let win : BrowserWindow 
 
 const seederData = async () => {
   try {
+    await createUsers()
     await createProductTypes()
     await createProducts()
   } catch (error) {
@@ -24,6 +26,12 @@ ipcMain.handle('getProductByType', (event, data) => {
 })
 ipcMain.handle('getProduct', (event, data) => {
   return getProduct(data)
+})
+ipcMain.handle('getUser', (event, data) => {
+  return getUser(data.email, data.password)
+})
+ipcMain.handle('insertUser', (event, data) => {
+  return insertUser(data.email, data.username, data.password)
 })
 
 

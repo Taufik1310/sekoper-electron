@@ -1,11 +1,18 @@
 import { useContext, useEffect, useState } from 'react'
 import { FaHome, FaInfoCircle, FaShoppingBag } from 'react-icons/fa'
-import { OffcanvasContext, PaginationContext } from '../Contexts'
+import { GoSignOut } from 'react-icons/go'
+import { AuthContext, OffcanvasContext, PaginationContext } from '../Contexts'
 import sekoperLogo from '../img/logo.png'
+import defaultProfile from '../img/default_profile.png'
 
 const Navbar = () => {
   const { pageId, onChange } = useContext(PaginationContext)
   const { isOpen } = useContext(OffcanvasContext)
+  const { isLoggedIn, user, onOpenLogin }: { 
+    isLoggedIn: boolean, 
+    user: any,
+    onOpenLogin: any
+  } = useContext(AuthContext)
   const navMenu = [
     {
       id: 0,
@@ -24,6 +31,7 @@ const Navbar = () => {
     },
   ]
   const [isVisible, setIsVisible] = useState(false)
+  const [isOpenProfile, setIsOpenProfile] = useState(false)
 
   useEffect(() => {
     setTimeout(() => {
@@ -34,6 +42,11 @@ const Navbar = () => {
   useEffect(() => {
     setIsVisible(!isOpen)
   }, [isOpen])
+
+  const handleLogout = () => {
+    localStorage.clear()
+    onOpenLogin()
+  }
 
   return (
     <nav
@@ -87,11 +100,33 @@ const Navbar = () => {
           ))}
       </ul>
       <button
+        onClick={() => onOpenLogin()}
+        hidden={isLoggedIn}
         type="button"
         className="bg-blue-700 border border-blue-700 py-2 px-6 rounded-lg hover:bg-blue-800 transition-all ease-in-out duration-200 text-xs font-semibold"
       >
         Masuk
       </button>
+      <div className={`relative text-start ${!isLoggedIn ? 'hidden' : 'inline-block'}`}>
+        <button
+          type="button"
+          className="inline-flex justify-center w-full"
+          onClick={() => setIsOpenProfile(!isOpenProfile)}
+        >
+          <img src={defaultProfile} alt="Default Profil" width={36} className='object-cover rounded-full cursor-pointer' />
+        </button>
+          {isOpenProfile && (
+            <div className="absolute end-0 z-10 mt-2 w-40 rounded-md shadow-lg bg-white ">
+              <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                <p className="block px-4 py-2 font-bold text-lg text-blue-700 text-center" role="menuitem">{user.username}</p>
+                <p className="flex items-center px-4 py-2 text-sm text-zinc-800 cursor-pointer hover:bg-blue-700 font-medium hover:text-blue-50" role="menuitem" onClick={handleLogout}>
+                  <GoSignOut size={18} className='me-3' />
+                  <span>Keluar</span>
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
     </nav>
   )
 }
