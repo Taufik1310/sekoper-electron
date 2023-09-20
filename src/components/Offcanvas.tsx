@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from 'react'
 import { FaArrowLeftLong } from 'react-icons/fa6'
 import { FaShoppingBag } from 'react-icons/fa'
-import { CheckoutContext, OffcanvasContext } from '../Contexts'
+import { CheckoutContext, OffcanvasContext, PurchaseContext } from '../Contexts'
 import ProductList from './ProductList'
 import Checkout from './Checkout'
+import Purchases from './Purchases'
 
 declare global {
   interface Window {
@@ -14,6 +15,7 @@ declare global {
 const Offcanvas = () => {
   const { onClose, dataId } = useContext(OffcanvasContext)
   const { isOpen } = useContext(CheckoutContext)
+  const { isOpen: isOpenPurchase } = useContext(PurchaseContext)
   const [isVisible, setIsVisible] = useState(false)
   const [productType, setProductType] = useState<any>({})
   const [products, setProducts] = useState<any[]>([])
@@ -22,8 +24,10 @@ const Offcanvas = () => {
     setTimeout(() => {
       setIsVisible(true)
     }, 200)
-    getProductType()
-    getProducts()
+    if (!isOpenPurchase) {
+      getProductType()
+      getProducts()
+    }
   }, [])
 
   const getProductType = async () => {
@@ -61,11 +65,12 @@ const Offcanvas = () => {
         </button>
         <h4 className="flex items-center gap-3">
           <FaShoppingBag />
-          <span>Produk</span>
+          <span>{isOpenPurchase ? 'Riwayat Pembelian' : isOpen ? 'Beli Produk' : 'Produk'}</span>
         </h4>
       </div>
       {
-        !isOpen ? <ProductList productType={productType} products={products} /> : <Checkout />
+        !isOpen && !isOpenPurchase ? <ProductList productType={productType} products={products} /> : 
+        isOpen ? <Checkout /> : <Purchases />
       }
     </div>
   )

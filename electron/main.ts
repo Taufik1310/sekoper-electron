@@ -4,6 +4,7 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-insta
 import { createProductTypes, getProductType } from './controller/ProductTypeController';
 import { createProducts, getProduct, getProductByType } from './controller/ProductController';
 import { createUsers, getUser, insertUser } from './controller/UserController';
+import { createPurchases, deletePurchase, getPurchases, insertPurchase } from './controller/PurchaseController';
 let win : BrowserWindow 
 
 const seederData = async () => {
@@ -11,6 +12,7 @@ const seederData = async () => {
     await createUsers()
     await createProductTypes()
     await createProducts()
+    await createPurchases()
   } catch (error) {
     console.error(error)
   }
@@ -31,7 +33,16 @@ ipcMain.handle('getUser', (event, data) => {
   return getUser(data.email, data.password)
 })
 ipcMain.handle('insertUser', (event, data) => {
-  return insertUser(data.email, data.username, data.password)
+  return insertUser(data.email, data.username, data.password, data.isAdmin)
+})
+ipcMain.handle('insertPurchase', (event, data) => {
+  return insertPurchase(data)
+})
+ipcMain.handle('getPurchases', (event, data) => {
+  return getPurchases(data)
+})
+ipcMain.handle('deletePurchase', (event, data) => {
+  return deletePurchase(data)
 })
 
 

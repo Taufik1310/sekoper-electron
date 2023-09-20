@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { AlertContext, AuthContext, CheckoutContext, OffcanvasContext, PaginationContext } from '../Contexts'
+import { AlertContext, AuthContext, CheckoutContext, OffcanvasContext, PaginationContext, PurchaseContext } from '../Contexts'
 import Intro from '../components/Intro'
 import Navbar from '../components/Navbar'
 import Offcanvas from '../components/Offcanvas'
@@ -19,6 +19,7 @@ const Main = () => {
   const [isOpenOffcanvas, setIsOpenOffcanvas] = useState(false)
   const [offcanvasDataId, setOffcanvasDataId] = useState(0)
   const [isOpenCheckout, setIsOpenCheckout] = useState(false)
+  const [isOpenPurchase, setIsOpenPurchase] = useState(false)
   const [checkoutDataId, setCheckoutDataId] = useState(0)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isOpenAuth, setIsOpenAuth] = useState({
@@ -36,7 +37,8 @@ const Main = () => {
     passwordInvalid: false,
     passwordNotMatch:  false,
     failRegister: false,
-    registered: false
+    registered: false,
+    checkout: false
   })
 
   const handlePageChanged = (id: number) => {
@@ -52,6 +54,7 @@ const Main = () => {
   const handleOffcanvasClosed = () => {
     setIsOpenOffcanvas(false)
     setIsOpenCheckout(false)
+    setIsOpenPurchase(false)
   }
 
   const handleCheckoutShowing = (id: number) => {
@@ -66,7 +69,8 @@ const Main = () => {
       passwordInvalid: false,
       passwordNotMatch: false,
       failRegister: false,
-      registered: false
+      registered: false,
+      checkout: false
     })
   }
 
@@ -98,56 +102,66 @@ const Main = () => {
                 onClose: handleOffcanvasClosed,
               }}
             >
-              <CheckoutContext.Provider
-                value={{ 
-                  isOpen: isOpenCheckout,
-                  dataId: checkoutDataId,
-                  onOpen: handleCheckoutShowing,
-                  onClose: handleOffcanvasClosed
-                }}
-              >
-                <AlertContext.Provider value={{ 
-                  onFailLogin: () => setIsAlertOpen({ ...isAlertOpen, failLogin: true }),
-                  onEmailInvalid: () => setIsAlertOpen({ ...isAlertOpen, emailInvalid: true }),
-                  onPasswordInvalid: () => setIsAlertOpen({ ...isAlertOpen, passwordInvalid: true }),
-                  onPasswordNotMatch: () => setIsAlertOpen({ ...isAlertOpen, passwordNotMatch: true }),
-                  onFailRegister: () => setIsAlertOpen({ ...isAlertOpen, failRegister: true }),
-                  onRegistered: () => setIsAlertOpen({ ...isAlertOpen, registered: true })
-                 }}>
-                  {
-                    !isOpenAuth.login && !isOpenAuth.register ?
-                    <>
-                      {isOpenOffcanvas && <Offcanvas />}
-                      <Navbar />
-                      {pageId === 0 && <Intro />}
-                      {pageId === 1 && <Products />}
-                    </>
-                    :
-                    isOpenAuth.login ?
-                    <Login />
-                    :
-                    <Register />
-                  }
-                  { isAlertOpen.failLogin &&    
-                      <AlertInfo type={1} status={0} onClose={handleCloseAlert} />
-                  }
-                  { isAlertOpen.emailInvalid &&    
-                      <AlertInfo type={1} status={1} onClose={handleCloseAlert} />
-                  }
-                  { isAlertOpen.passwordInvalid &&    
-                      <AlertInfo type={1} status={2} onClose={handleCloseAlert} />
-                  }
-                  { isAlertOpen.passwordNotMatch &&    
-                      <AlertInfo type={1} status={3} onClose={handleCloseAlert} />
-                  }
-                  { isAlertOpen.failRegister &&    
-                      <AlertInfo type={1} status={4} onClose={handleCloseAlert} />
-                  }
-                  { isAlertOpen.registered &&    
-                      <AlertInfo type={0} status={5} onClose={handleCloseAlert} />
-                  }
-                </AlertContext.Provider>
-              </CheckoutContext.Provider>
+              <PurchaseContext.Provider value={{ 
+                isOpen: isOpenPurchase,
+                onOpen: () => setIsOpenPurchase(true),
+                onClose: handleOffcanvasClosed
+               }}>
+                <CheckoutContext.Provider
+                  value={{ 
+                    isOpen: isOpenCheckout,
+                    dataId: checkoutDataId,
+                    onOpen: handleCheckoutShowing,
+                    onClose: handleOffcanvasClosed
+                  }}
+                >
+                  <AlertContext.Provider value={{ 
+                    onFailLogin: () => setIsAlertOpen({ ...isAlertOpen, failLogin: true }),
+                    onEmailInvalid: () => setIsAlertOpen({ ...isAlertOpen, emailInvalid: true }),
+                    onPasswordInvalid: () => setIsAlertOpen({ ...isAlertOpen, passwordInvalid: true }),
+                    onPasswordNotMatch: () => setIsAlertOpen({ ...isAlertOpen, passwordNotMatch: true }),
+                    onFailRegister: () => setIsAlertOpen({ ...isAlertOpen, failRegister: true }),
+                    onRegistered: () => setIsAlertOpen({ ...isAlertOpen, registered: true }),
+                    onCheckout: () => setIsAlertOpen({ ...isAlertOpen, checkout: true })
+                  }}>
+                    {
+                      !isOpenAuth.login && !isOpenAuth.register ?
+                      <>
+                        {isOpenOffcanvas && <Offcanvas />}
+                        <Navbar />
+                        {pageId === 0 && <Intro />}
+                        {pageId === 1 && <Products />}
+                      </>
+                      :
+                      isOpenAuth.login ?
+                      <Login />
+                      :
+                      <Register />
+                    }
+                    { isAlertOpen.failLogin &&    
+                        <AlertInfo type={1} status={0} onClose={handleCloseAlert} />
+                      }
+                    { isAlertOpen.emailInvalid &&    
+                        <AlertInfo type={1} status={1} onClose={handleCloseAlert} />
+                    }
+                    { isAlertOpen.passwordInvalid &&    
+                        <AlertInfo type={1} status={2} onClose={handleCloseAlert} />
+                    }
+                    { isAlertOpen.passwordNotMatch &&    
+                        <AlertInfo type={1} status={3} onClose={handleCloseAlert} />
+                    }
+                    { isAlertOpen.failRegister &&    
+                        <AlertInfo type={1} status={4} onClose={handleCloseAlert} />
+                    }
+                    { isAlertOpen.registered &&    
+                        <AlertInfo type={0} status={5} onClose={handleCloseAlert} />
+                    }
+                    { isAlertOpen.checkout &&    
+                        <AlertInfo type={0} status={6} onClose={handleCloseAlert} />
+                    }
+                  </AlertContext.Provider>
+                </CheckoutContext.Provider>
+              </PurchaseContext.Provider>
             </OffcanvasContext.Provider>
           </PaginationContext.Provider>
         </AuthContext.Provider>

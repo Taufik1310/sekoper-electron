@@ -1,4 +1,5 @@
 import Product from "../models/Product"
+import sequelize from "../models/connection"
 
 export const createProducts = async () => {
     const ProductData = [
@@ -340,5 +341,20 @@ export const getProduct = async (id: number) => {
         return rows
     } catch (error) {
         console.log('Gagal mengambil data produk: ', error)
+    }
+}
+
+export const updateProductStock = async (name: string, quantity: number) => {
+    try {
+        const product = await Product.update({
+            stock: sequelize.literal(`stock - ${quantity}`),
+        }, {
+            where: {
+                name: name
+            }
+        })
+        return product
+    } catch (error) {
+        console.error(error)
     }
 }

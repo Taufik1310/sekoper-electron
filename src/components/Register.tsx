@@ -42,7 +42,7 @@ const Register = () => {
             return
         }
 
-        let dataSended = { email: email, username: username, password: password }
+        let dataSended = { email: email, username: username, password: password, isAdmin: false }
 
         try {
             const result = await window.database.insertUser(dataSended)

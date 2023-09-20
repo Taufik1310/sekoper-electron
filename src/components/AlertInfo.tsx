@@ -58,6 +58,9 @@ const AlertInfo = ({ onClose, status, type }: {
                                 status === 5 ?
                                 `Berhasil Mendaftar`
                                 :
+                                status === 6 ?
+                                `Produk berhasil dibeli`
+                                :
                                 null
                             }
                         </p>

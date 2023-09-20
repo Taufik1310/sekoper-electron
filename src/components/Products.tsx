@@ -24,6 +24,12 @@ const Products = () => {
     setProductId(id)
   }
 
+  useEffect(() => {
+    if (!isOpen) {
+      setProductId(0)
+    }
+  }, [isOpen])
+
   return (
     <div className="mt-10">
       <div

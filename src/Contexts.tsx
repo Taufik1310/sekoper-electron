@@ -32,7 +32,14 @@ const AlertContext = createContext({
   onPasswordInvalid: () => {},
   onPasswordNotMatch: () => {},
   onFailRegister: () => {},
-  onRegistered: () => {}
+  onRegistered: () => {},
+  onCheckout: () => {}
 })
 
-export { PaginationContext, OffcanvasContext, CheckoutContext, AuthContext, AlertContext }
+const PurchaseContext = createContext({
+  isOpen: false,
+  onOpen: () => {},
+  onClose: () => {}
+})
+
+export { PaginationContext, OffcanvasContext, CheckoutContext, AuthContext, AlertContext, PurchaseContext }

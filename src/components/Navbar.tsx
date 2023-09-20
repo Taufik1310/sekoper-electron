@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from 'react'
-import { FaHome, FaInfoCircle, FaShoppingBag } from 'react-icons/fa'
+import { FaHome, FaShoppingBag } from 'react-icons/fa'
 import { GoSignOut } from 'react-icons/go'
-import { AuthContext, OffcanvasContext, PaginationContext } from '../Contexts'
+import { AuthContext, OffcanvasContext, PaginationContext, PurchaseContext } from '../Contexts'
 import sekoperLogo from '../img/logo.png'
 import defaultProfile from '../img/default_profile.png'
 
 const Navbar = () => {
   const { pageId, onChange } = useContext(PaginationContext)
-  const { isOpen } = useContext(OffcanvasContext)
-  const { isLoggedIn, user, onOpenLogin }: { 
+  const { isOpen, onOpen } = useContext(OffcanvasContext)
+  const { onOpen: onOpenPurchase } = useContext(PurchaseContext)
+  const { isLoggedIn, onOpenLogin }: { 
     isLoggedIn: boolean, 
-    user: any,
     onOpenLogin: any
   } = useContext(AuthContext)
   const navMenu = [
@@ -24,11 +24,11 @@ const Navbar = () => {
       name: 'Produk',
       icon: <FaShoppingBag />,
     },
-    {
-      id: 2,
-      name: 'Informasi',
-      icon: <FaInfoCircle />,
-    },
+    // {
+    //   id: 2,
+    //   name: 'Informasi',
+    //   icon: <FaInfoCircle />,
+    // },
   ]
   const [isVisible, setIsVisible] = useState(false)
   const [isOpenProfile, setIsOpenProfile] = useState(false)
@@ -46,6 +46,11 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.clear()
     onOpenLogin()
+  }
+
+  const handlePurchaseHistory = () => {
+    onOpen(7)
+    onOpenPurchase()
   }
 
   return (
@@ -116,11 +121,14 @@ const Navbar = () => {
           <img src={defaultProfile} alt="Default Profil" width={36} className='object-cover rounded-full cursor-pointer' />
         </button>
           {isOpenProfile && (
-            <div className="absolute end-0 z-10 mt-2 w-40 rounded-md shadow-lg bg-white ">
-              <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                <p className="block px-4 py-2 font-bold text-lg text-blue-700 text-center" role="menuitem">{user.username}</p>
-                <p className="flex items-center px-4 py-2 text-sm text-zinc-800 cursor-pointer hover:bg-blue-700 font-medium hover:text-blue-50" role="menuitem" onClick={handleLogout}>
-                  <GoSignOut size={18} className='me-3' />
+            <div className="absolute end-0 z-10 mt-2 w-52 rounded-md shadow-lg bg-white ">
+              <div className='py-1'>
+                <p className='flex items-center cursor-pointer text-zinc-700 px-4 py-2 text-sm font-semibold hover:bg-blue-700 hover:text-zinc-100' onClick={handlePurchaseHistory}>
+                  <FaShoppingBag size={14} className='me-4' />
+                  <span>Riwayat Pembelian</span>
+                </p>
+                <p className='flex items-center cursor-pointer text-zinc-700 px-4 py-2 text-sm font-semibold hover:bg-blue-700 hover:text-zinc-100' onClick={handleLogout}>
+                  <GoSignOut size={14} className='me-4 text-xs' />
                   <span>Keluar</span>
                 </p>
               </div>
