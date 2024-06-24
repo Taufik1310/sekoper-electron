@@ -26,9 +26,14 @@ export const createUsers = async () => {
     }
 }
 
-export const getUser = async (email: string, password: string) => {
+export const getUser = async (email: string, password: string, isAdmin: boolean) => {
     try {
-        const user = await User.findByPk(email)
+        const user = await User.findOne({
+            where: {
+                email: email,
+                isAdmin: isAdmin
+            }
+        })
 
         if (!user) {
             return 404

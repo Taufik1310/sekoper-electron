@@ -9,9 +9,9 @@ const Navbar = () => {
   const { pageId, onChange } = useContext(PaginationContext)
   const { isOpen, onOpen } = useContext(OffcanvasContext)
   const { onOpen: onOpenPurchase } = useContext(PurchaseContext)
-  const { isLoggedIn, onOpenLogin }: { 
+  const { isLoggedIn, onOpenUserCategory }: { 
     isLoggedIn: boolean, 
-    onOpenLogin: any
+    onOpenUserCategory: any
   } = useContext(AuthContext)
   const navMenu = [
     {
@@ -45,7 +45,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.clear()
-    onOpenLogin()
+    onOpenUserCategory()
   }
 
   const handlePurchaseHistory = () => {
@@ -105,7 +105,7 @@ const Navbar = () => {
           ))}
       </ul>
       <button
-        onClick={() => onOpenLogin()}
+        onClick={() => onOpenUserCategory()}
         hidden={isLoggedIn}
         type="button"
         className="bg-blue-700 border border-blue-700 py-2 px-6 rounded-lg hover:bg-blue-800 transition-all ease-in-out duration-200 text-xs font-semibold"

@@ -8,7 +8,9 @@ contextBridge.exposeInMainWorld('database', {
     getPurchases: (customer: string) => ipcRenderer.invoke('getPurchases', customer),
     getUser: (data: {
         email: string,
-        password: string
+        password: string,
+        isAdmin: number
+        
     }) => ipcRenderer.invoke('getUser', data),
     insertUser: (data: {
         email: string,

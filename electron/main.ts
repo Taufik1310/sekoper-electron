@@ -30,7 +30,7 @@ ipcMain.handle('getProduct', (event, data) => {
   return getProduct(data)
 })
 ipcMain.handle('getUser', (event, data) => {
-  return getUser(data.email, data.password)
+  return getUser(data.email, data.password, data.isAdmin)
 })
 ipcMain.handle('insertUser', (event, data) => {
   return insertUser(data.email, data.username, data.password, data.isAdmin)

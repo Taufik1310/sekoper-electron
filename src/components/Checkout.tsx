@@ -3,7 +3,7 @@ import { AlertContext, AuthContext, CheckoutContext } from "../Contexts"
 
 const Checkout = () => {
     const { dataId } = useContext(CheckoutContext)
-    const { isLoggedIn, onOpenLogin } = useContext(AuthContext)
+    const { isLoggedIn, onOpenUserCategory } = useContext(AuthContext)
     const { onCheckout } = useContext(AlertContext)
     const [product, setProduct] = useState<any>({})
     const [quantity, setQuantity] = useState(1)
@@ -28,7 +28,7 @@ const Checkout = () => {
     }
 
     const handleBuyClicked = () => {
-        !isLoggedIn ?  onOpenLogin() : purchased()
+        !isLoggedIn ?  onOpenUserCategory() : purchased()
     }
 
     const purchased = async () => {

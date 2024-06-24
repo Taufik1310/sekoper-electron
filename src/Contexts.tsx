@@ -23,6 +23,9 @@ const AuthContext = createContext({
   isLoggedIn: false,
   onOpenLogin: () => {},
   onOpenRegister: () => {},
+  onAdmin: (status: boolean) => {},
+  onOpenUserCategory: () => {},
+  isAdmin: false,
   user: {},
 })
 

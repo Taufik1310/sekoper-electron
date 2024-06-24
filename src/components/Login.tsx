@@ -5,20 +5,22 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const { onFailLogin } = useContext(AlertContext)
-    const { onOpenRegister } = useContext(AuthContext)
+    const { onOpenRegister, isAdmin } = useContext(AuthContext)
 
     const handleFormSubmitted = (e: { preventDefault: () => void }) => {
         e.preventDefault()
         let data = {
             email: email,
-            password: password
+            password: password,
+            isAdmin: isAdmin
         }
         validateUser(data)
     }
 
     const validateUser = async (data: {
         email: string,
-        password: string
+        password: string,
+        isAdmin: boolean
     }) => {
         try {
             const result = await window.database.getUser(data)
@@ -37,9 +39,9 @@ const Login = () => {
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
             <div className="w-full p-6 m-auto bg-transparent rounded-md shadow-md lg:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-blue-700">
-                Masuk
+                Masuk sebagai {isAdmin ? 'Admin' : 'Pengguna'}
                 </h1>
-                <form className="mt-6" onSubmit={handleFormSubmitted}>
+                <form className="mt-10" onSubmit={handleFormSubmitted}>
                     <div className="mb-2">
                         <label
                             className="block text-sm font-semibold text-blue-50"
@@ -75,7 +77,7 @@ const Login = () => {
                     </div>
                 </form>
 
-                <p className="mt-8 text-xs font-light text-center text-blue-50">
+                <p className="mt-8 text-xs font-light text-center text-blue-50" hidden={isAdmin}>
                     {" "}
                     Belum punya Akun?{" "}
                     <span

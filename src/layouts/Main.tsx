@@ -7,6 +7,7 @@ import Products from '../components/Products'
 import Login from '../components/Login'
 import AlertInfo from '../components/AlertInfo'
 import Register from '../components/Register'
+import UserCategory from '../components/UserCategory'
 
 interface UserType {
   email: string,
@@ -24,7 +25,8 @@ const Main = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isOpenAuth, setIsOpenAuth] = useState({
     login: false,
-    register: false
+    register: false,
+    category: false
   })
   const [user, setUser] = useState<UserType>({
     email: 'user@gmail.com',
@@ -40,6 +42,7 @@ const Main = () => {
     registered: false,
     checkout: false
   })
+  const [isAdmin, setIsAdmin] = useState(false)
 
   const handlePageChanged = (id: number) => {
     setPageId(id)
@@ -83,10 +86,13 @@ const Main = () => {
   return (
       <main className="bg-zinc-900 w-screen h-screen overflow-x-hidden overflow-y-hidden relative">
         <AuthContext.Provider value={{ 
+            isAdmin: isAdmin,
             isLoggedIn: isLoggedIn,
-            onOpenLogin: () => setIsOpenAuth({ register: false, login: true }),
-            onOpenRegister: () => setIsOpenAuth({ login: false, register: true }),
+            onOpenLogin: () => setIsOpenAuth({ register: false, login: true, category: false }),
+            onOpenRegister: () => setIsOpenAuth({ login: false, register: true, category: false }),
             user: user,
+            onAdmin: (status) => setIsAdmin(status),
+            onOpenUserCategory: () => setIsOpenAuth({ login: false, register: false, category: true })
          }}>
           <PaginationContext.Provider
             value={{
@@ -125,13 +131,16 @@ const Main = () => {
                     onCheckout: () => setIsAlertOpen({ ...isAlertOpen, checkout: true })
                   }}>
                     {
-                      !isOpenAuth.login && !isOpenAuth.register ?
+                      !isOpenAuth.category && !isOpenAuth.login && !isOpenAuth.register ?
                       <>
                         {isOpenOffcanvas && <Offcanvas />}
                         <Navbar />
                         {pageId === 0 && <Intro />}
                         {pageId === 1 && <Products />}
                       </>
+                      :
+                      isOpenAuth.category ?
+                      <UserCategory />
                       :
                       isOpenAuth.login ?
                       <Login />
